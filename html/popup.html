@@ -1,13 +1,62 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf-8">
         <style>
-            button {width:30px;height:30px;outline:none;}
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            #wrap {
+                width: 400px;
+                height: 500px;
+            }
+            h1 {
+                width: 100%;
+                margin: 0;
+                padding: 0.4rem 1rem;
+                font-size: 1.5rem;
+                line-height: 2.6rem;
+                background-color: #333;
+                color: #fff;
+            }
+            #innerWrap {
+                width: clac(100vw - 2px);
+                height: 30vh;
+                overflow: hidden;
+                border: 1px #dfdfdf solid;
+            }
+            #sayThis {
+                width: 100%;
+                height: 100%;
+                border:0;
+                line-height: 1.5rem;
+                font-size: 1rem;
+                resize: none;
+                outline: none;
+                -webkit-box-shadow: none;
+                -moz-box-shadow: none;
+                box-shadow: none;
+            }
+            #speak {
+                width: 100%;
+                margin: 0.2rem 0;
+                line-height: 1.4rem;
+                text-align: center;
+            }
         </style>
     </head>
     <body>
-        <button id="changeColor"></button>
-        <button id="restoreColor"></button>
+        <div id="wrap">
+            <h1>읽어주기 ::</h1>
+            <div id="innerWrap">
+                <textarea id="sayThis" placeholder="write here, something to say">The quick onyx goblin jumps over the lazy dwarf.</textarea>
+            </div>
+            <button id="speak">SAY</button>
+            <p id="wordList"></p>
+        </div>
+
+        <script src="../js/jquery.js"></script>
         <script src="../js/popup.js"></script>
     </body>
 </html>
