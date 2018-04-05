@@ -100,6 +100,21 @@ $(document).ready(function() {
         $('#functionName').val($(this).text());
         $('#btnFunctionSearch').trigger('click');
     });
+
+    $(document).on('click', '#functionName', function(){
+        var _this = $(this);
+        if (_this.val()) {
+            _this.data('preVal',_this.val());
+            _this.val('');
+        }
+    });
+
+    $(document).on('blur', '#functionName', function(){
+        var _this = $(this);
+        if (_this.data('preVal')) {
+            _this.val(_this.data('preVal'));
+        }
+    });
 });
 
 function showTabs() {
@@ -126,7 +141,6 @@ function showTabs() {
                     $('#btnFunctionSearch').trigger('click');
                 }
             });
-            $('#functionName').focus();
         }
     }
 }
