@@ -29,3 +29,4 @@
 ##  부가설명
 1. ```Text To Speech```, ```PHP Function Search``` 탭은 마지막에 선택했던 탭이 유지됨
 2. ```Text To Speech```에서 언어선택값은 마지막에 선택했던 값이 유지됨
+2. ```PHP Function Search```는 마지막에 검색했던 함수값이 유지됨
