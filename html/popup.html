@@ -2,61 +2,49 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <style>
-            body {
-                margin: 0;
-                padding: 0;
-            }
-            #wrap {
-                width: 400px;
-                height: 500px;
-            }
-            h1 {
-                width: 100%;
-                margin: 0;
-                padding: 0.4rem 1rem;
-                font-size: 1.5rem;
-                line-height: 2.6rem;
-                background-color: #333;
-                color: #fff;
-            }
-            #innerWrap {
-                width: clac(100vw - 2px);
-                height: 30vh;
-                overflow: hidden;
-                border: 1px #dfdfdf solid;
-            }
-            #sayThis {
-                width: 100%;
-                height: 100%;
-                border:0;
-                line-height: 1.5rem;
-                font-size: 1rem;
-                resize: none;
-                outline: none;
-                -webkit-box-shadow: none;
-                -moz-box-shadow: none;
-                box-shadow: none;
-            }
-            #speak {
-                width: 100%;
-                margin: 0.2rem 0;
-                line-height: 1.4rem;
-                text-align: center;
-            }
-        </style>
+        <link rel="stylesheet" href="../css/bootstrap.min.css">
+        <link rel="stylesheet" href="../css/common.css">
+        <script src="../js/jquery.js"></script>
+        <script src="../js/popper.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
     </head>
     <body>
-        <div id="wrap">
-            <h1>읽어주기 ::</h1>
-            <div id="innerWrap">
-                <textarea id="sayThis" placeholder="write here, something to say">The quick onyx goblin jumps over the lazy dwarf.</textarea>
-            </div>
-            <button id="speak">SAY</button>
-            <p id="wordList"></p>
-        </div>
+        <div class="container-fluid pl-0 pr-0">
+            <ul class="nav nav-pills nav-justified">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-value="tts">Text To Speech</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-value="functionSearch">PHP Function Search</a>
+                </li>
+            </ul>
 
-        <script src="../js/jquery.js"></script>
+            <div id="tts" class="container w-100 pt-2 pl-0 pr-0 d-none">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-sm btn-outline-info">
+                        <input type="radio" name="lang" class="radioLang" value="ko-KR" data-name="Yuna"/> 한글
+                    </label>
+                    <label class="btn btn-sm btn-outline-info">
+                        <input type="radio" name="lang" class="radioLang" value="en-US" data-name="Victoria"/> 영어
+                    </label>
+                    <label class="btn btn-sm btn-outline-info">
+                        <input type="radio" name="lang" class="radioLang" value="ja-JP" data-name="Kyoko"/> 일어
+                    </label>
+                </div>
+                <div id="innerWrap" class="container w-100 mt-1 pl-0 pr-0 border border-dark">
+                    <textarea id="sayThis" class="w-100 h-100 border-0" placeholder="write here, something to say">The quick onyx goblin jumps over the lazy dwarf.</textarea>
+                </div>
+                <button type="button" id="speak" class="mt-1 w-100 btn btn-sm btn-primary">SAY</button>
+            </div>
+
+            <div id="functionSearch" class="container w-100 pt-2 pl-0 pr-0 d-none">
+                <div class="w-100 d-flex flex-row">
+                    <input type="text" id="functionName" class="form-control form-control-sm" placeholder="function name" value=""/>
+                    <button type="button" id="btnFunctionSearch" class="btn btn-primary btn-sm ml-2">SEARCH</button>
+                </div>
+                <div id="functionDesc" class="border border-dark mt-2 p-1 clearfix"></div>
+            </div>
+        </div>
         <script src="../js/popup.js"></script>
     </body>
 </html>

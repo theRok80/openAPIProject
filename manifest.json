@@ -8,6 +8,7 @@
         "tabs",
         "declarativeContent",
         "tts",
+        "storage",
         "http://*/",
         "https://*/"
     ],

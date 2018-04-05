@@ -1,0 +1,59 @@
+* {
+    outline: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+body {
+    width: 420px;
+    margin: 0;
+    padding: 10px;
+}
+h1 {
+    font-size: 1.2rem;
+    background-color: #333;
+    color: #fff;
+}
+#innerWrap {
+    height: 75px;
+    overflow: hidden;
+}
+#sayThis {
+    line-height: 1.5rem;
+    font-size: 1rem;
+    resize: none;
+}
+
+#functionDesc {
+    display: none;
+    font-size: 0.8rem;
+    background-color: #F0F0F0;
+}
+
+#functionDesc h3 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+#functionDesc .methodsynopsis {
+    background-color: #fff;
+    border:1px #D9D9D9 solid;
+    padding: 0.25rem;
+}
+
+#functionDesc .para {
+    margin-bottom: 0.25rem;
+    padding-left: 0.5rem;
+}
+
+#functionDesc blockquote {
+    background-color: #fff;
+    border:1px #D9D9D9 solid;
+    margin: 0 0 0.25rem;
+    padding: 0.25rem;
+}
+
+#functionDesc blockquote p {
+    margin-bottom: 0.25rem;
+}

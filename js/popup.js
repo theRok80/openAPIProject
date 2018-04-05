@@ -1,28 +1,47 @@
 var sayThis;
 var wordList;
+var lang;
+var voiceName;
+var functionName;
+var tabId;
 
 $(document).ready(function() {
     sayThis = $("#sayThis");
     wordList = $("#wordList");
 
-    // chrome.tts.getVoices(
-    //     function(voices) {
-    //       for (var i = 0; i < voices.length; i++) {
-    //         console.log('Voice ' + i + ':');
-    //         console.log('  name: ' + voices[i].voiceName);
-    //         console.log('  lang: ' + voices[i].lang);
-    //         console.log('  gender: ' + voices[i].gender);
-    //         console.log('  extension id: ' + voices[i].extensionId);
-    //         console.log('  event types: ' + voices[i].eventTypes);
-    //       }
-    //     });
+    chrome.storage.local.get('lang', function(data){
+        if (typeof (data.lang) == "undefined") {
+            chrome.storage.local.set({'lang':'ko-KR', 'voiceName':'Yuna'});
+            lang = "ko-KR";
+            voiceName = "Yuna";
+        } else {
+            lang = data.lang;
+            voiceName = data.voiceName;
+        }
+        $('.radioLang').each(function(){
+            var _this = $(this);
+            if (_this.val() == lang) {
+                _this.prop('checked',true).parent().addClass('active');
+                return;
+            }
+        });
+    });
+
+    chrome.storage.local.get('tabId', function(data){
+        if (typeof (data.tabId) == "undefined") {
+            chrome.storage.local.set({'tabId':'tts'});
+            tabId = "tts";
+        } else {
+            tabId = data.tabId;
+        }
+        showTabs();
+    });
 
     chrome.tabs.executeScript( {
         code: "window.getSelection().toString();"
     }, function(selection) {
-        var string = selection[0];
-        if (string.length > 0) {
-            sayThis.val(string);
+        if (typeof(selection[0]) != "undefined") {
+            sayThis.val(selection[0]);
         }
     });
 
@@ -31,8 +50,8 @@ $(document).ready(function() {
         if (sayThis.val()) {
             chrome.tts.speak(sayThis.val(), {
                 rate : 0.8,
-                lang: "ko-KR",
-                voiceName: "Google 한국의",
+                lang: lang,
+                voiceName : voiceName,
                 onEvent: function(event) {
                     // console.log(event.type);
                 }
@@ -40,7 +59,89 @@ $(document).ready(function() {
         }
     });
 
-    sayThis.focus(function(event){
+    $('.radioLang').change(function(){
+        lang = $('.radioLang:checked').val(),
+        voiceName = $('.radioLang:checked').data('name');
+        chrome.storage.local.set({'lang':lang, 'voiceName':voiceName});
+    });
+
+    sayThis. on('focus',function(event){
         chrome.tts.stop();
     });
+
+    $(document).on('click', '#btnFunctionSearch', function(){
+        var _value = $('#functionName').val();
+        if (_value) {
+            functionName = _value.replace('_', '-');
+            callPHPnet();
+        }
+    });
+
+    $(document).on('click', '.nav-link', function() {
+        var _this = $(this),
+            _value = _this.data('value');
+        if (_value) {
+            chrome.storage.local.set({'tabId':_value});
+            tabId = _value;
+            showTabs();
+        }
+    });
+
+    $(window).on('keypress',function(event){
+        if ($('#functionName').is(':focus') && event.keyCode == 13) {
+            $('#btnFunctionSearch').trigger('click');
+        }
+    });
 });
+
+function showTabs() {
+    if ($('#' + tabId).length > 0) {
+        $('.nav-link').each(function(){
+            if ($(this).data('value') == tabId) {
+                $(this).addClass('active');
+            } else {
+                $(this).removeClass('active');
+            }
+        });
+        $('.container-fluid > .container').each(function(){
+            if ($(this).attr('id') == tabId) {
+                $(this).removeClass('d-none');
+            } else {
+                $(this).addClass('d-none');
+            }
+        });
+
+        if (tabId == "functionSearch") {
+            $('#functionName').focus();
+        }
+    }
+}
+
+function callPHPnet() {
+    var xhr = new XMLHttpRequest();
+    var div = $('#functionDesc');
+    var url = "http://php.net/manual/en/function." + functionName + ".php";
+    xhr.open("GET", url, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            var tmp = $('<div>').html(xhr.responseText);
+            tmp.find('a').each(function(){
+                $(this).wrapInner('<span>');
+                $(this).find('span').unwrap();
+            });
+            var html = "";
+            div.html('');
+            if (tmp.find('.description').length > 0) {
+                html += tmp.find('.description').html();
+                html += '<p></p>';
+                html += tmp.find('.parameters').html();
+                html += '<a href="' + url + ' " class="btn btn-success btn-sm float-right" style="font-size:0.8rem" target="_blank">VIEW IN PHP.net</button>';
+                div.html(html);
+            } else {
+                div.html('<div class="notFound">' + functionName + ' : NOT FOUND</div>');
+            }
+            div.show();
+        }
+    }
+    xhr.send();
+}
