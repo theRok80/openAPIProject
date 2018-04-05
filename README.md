@@ -6,6 +6,7 @@
 ## 사용 라이브러리
 * [jQuery](http://jquery.com)
 * [BOOTSTRAP](https://getbootstrap.com/)
+* [Underscore](http://underscorejs.org/)
 
 ## 설치방법
 1. 확장 프로그램 페이지 열기위해 주소창에 ```chrome://extensions```입력
