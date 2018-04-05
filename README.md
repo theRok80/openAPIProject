@@ -1,11 +1,9 @@
 # google chrome extension
 
-## 구글확장
-
 ## API
 * [google chrome extension api](https://developer.chrome.com/extensions)
 
-## 사용 라이브러리 목록
+## 사용 라이브러리
 * [BOOTSTRAP](https://getbootstrap.com/)
 
 ## 설치방법
