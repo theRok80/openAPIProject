@@ -161,7 +161,7 @@ function callPHPnet() {
                     html += tmp.find('#tmpList').html();
                 }
 
-                html += '<a href="' + url + ' " class="btn btn-success btn-sm float-right" style="font-size:0.8rem" target="_blank">VIEW IN PHP.net</button>';
+                html += '<a href="' + url + ' " id="btnViewInPHP" class="btn btn-success btn-sm" style="font-size:0.8rem" target="_blank">VIEW IN PHP.net</button>';
                 div.html(html);
             } else if (tmp.find('.partintro').length > 0) {
                 html += tmp.find('.partintro').html();
