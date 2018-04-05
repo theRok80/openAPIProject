@@ -182,7 +182,6 @@ function callPHPnet() {
                 div.html(html);
             } else {
                 html += "<div class='notFound'>" + functionName + " doesn't exist. Closest matches:</div>";
-                url = "http://php.net/manual-lookup.php?pattern=" + functionName + "&scope=quickref";
                 xhr.open("GET", url, true);
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState == 4) {
