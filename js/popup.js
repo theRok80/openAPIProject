@@ -72,7 +72,9 @@ $(document).ready(function() {
     $(document).on('click', '#btnFunctionSearch', function(){
         var _value = $('#functionName').val();
         if (_value) {
-            functionName = _value.replace('_', '-');
+            functionName = _.unescape(_value);
+            functionName = functionName.replace(/\u200B/g,'');
+            chrome.storage.local.set({'functionName':functionName});
             callPHPnet();
         }
     });
@@ -91,6 +93,12 @@ $(document).ready(function() {
         if ($('#functionName').is(':focus') && event.keyCode == 13) {
             $('#btnFunctionSearch').trigger('click');
         }
+    });
+
+    $(document).on('click', '.linkToPHPnet', function(event){
+        event.preventDefault();
+        $('#functionName').val($(this).text());
+        $('#btnFunctionSearch').trigger('click');
     });
 });
 
@@ -112,6 +120,12 @@ function showTabs() {
         });
 
         if (tabId == "functionSearch") {
+            chrome.storage.local.get('functionName', function(data){
+                if (typeof (data.functionName) != "undefined") {
+                    $('#functionName').val(data.functionName);
+                    $('#btnFunctionSearch').trigger('click');
+                }
+            });
             $('#functionName').focus();
         }
     }
@@ -120,27 +134,57 @@ function showTabs() {
 function callPHPnet() {
     var div = $('#functionDesc');
     var xhr = new XMLHttpRequest();
-    var url = "http://php.net/manual/en/function." + functionName + ".php";
+    var url = "http://php.net/manual-lookup.php?pattern=" + functionName + "&scope=quickref";
     xhr.open("GET", url, true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4) {
             var tmp = $('<div>').html(xhr.responseText);
-            tmp.find('a').each(function(){
+            tmp.find('.child-menu-list a').each(function(){
+                $(this).addClass('linkToPHPnet');
+            });
+
+            tmp.find('a:not(.linkToPHPnet)').each(function(){
                 $(this).wrapInner('<span>');
                 $(this).find('span').unwrap();
             });
+
             var html = "";
             div.html('');
             if (tmp.find('.description').length > 0) {
                 html += tmp.find('.description').html();
                 html += '<p></p>';
                 html += tmp.find('.parameters').html();
+
+                if (tmp.find('.parent-menu-list').length > 0) {
+                    tmp.find('.parent-menu-list').addClass('container').wrap('<div id="tmpList">');
+                    tmp.find('.parent-menu-list .child-menu-list').addClass('pl-2');
+                    html += tmp.find('#tmpList').html();
+                }
+
                 html += '<a href="' + url + ' " class="btn btn-success btn-sm float-right" style="font-size:0.8rem" target="_blank">VIEW IN PHP.net</button>';
                 div.html(html);
+            } else if (tmp.find('.partintro').length > 0) {
+                html += tmp.find('.partintro').html();
+                div.html(html);
             } else {
-                div.html('<div class="notFound">' + functionName + ' : NOT FOUND</div>');
+                html += "<div class='notFound'>" + functionName + " doesn't exist. Closest matches:</div>";
+                url = "http://php.net/manual-lookup.php?pattern=" + functionName + "&scope=quickref";
+                xhr.open("GET", url, true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4) {
+                        var tmp = $('<div>').html(xhr.responseText);
+                        tmp.find('#quickref_functions li a').each(function(){
+                            $(this).addClass('linkToPHPnet');
+                        });
+                        tmp.find('#quickref_functions').wrap('<div id="tmpList">');
+                        html += tmp.find('#tmpList').html();
+                        div.html(html);
+                    }
+                }
+                xhr.send();
             }
             div.show();
+            window.scrollTo(0, 0);
         }
     }
     xhr.send();

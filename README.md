@@ -4,6 +4,7 @@
 * [google chrome extension api](https://developer.chrome.com/extensions)
 
 ## 사용 라이브러리
+* [jQuery](http://jquery.com)
 * [BOOTSTRAP](https://getbootstrap.com/)
 
 ## 설치방법
