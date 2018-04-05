@@ -118,8 +118,8 @@ function showTabs() {
 }
 
 function callPHPnet() {
-    var xhr = new XMLHttpRequest();
     var div = $('#functionDesc');
+    var xhr = new XMLHttpRequest();
     var url = "http://php.net/manual/en/function." + functionName + ".php";
     xhr.open("GET", url, true);
     xhr.onreadystatechange = function() {
