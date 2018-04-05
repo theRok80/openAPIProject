@@ -5,37 +5,37 @@ var voiceName;
 var functionName;
 var tabId;
 
+chrome.storage.local.get('lang', function(data){
+    if (typeof (data.lang) == "undefined") {
+        chrome.storage.local.set({'lang':'ko-KR', 'voiceName':'Yuna'});
+        lang = "ko-KR";
+        voiceName = "Yuna";
+    } else {
+        lang = data.lang;
+        voiceName = data.voiceName;
+    }
+    $('.radioLang').each(function(){
+        var _this = $(this);
+        if (_this.val() == lang) {
+            _this.prop('checked',true).parent().addClass('active');
+            return;
+        }
+    });
+});
+
+chrome.storage.local.get('tabId', function(data){
+    if (typeof (data.tabId) == "undefined") {
+        chrome.storage.local.set({'tabId':'tts'});
+        tabId = "tts";
+    } else {
+        tabId = data.tabId;
+    }
+    showTabs();
+});
+
 $(document).ready(function() {
     sayThis = $("#sayThis");
     wordList = $("#wordList");
-
-    chrome.storage.local.get('lang', function(data){
-        if (typeof (data.lang) == "undefined") {
-            chrome.storage.local.set({'lang':'ko-KR', 'voiceName':'Yuna'});
-            lang = "ko-KR";
-            voiceName = "Yuna";
-        } else {
-            lang = data.lang;
-            voiceName = data.voiceName;
-        }
-        $('.radioLang').each(function(){
-            var _this = $(this);
-            if (_this.val() == lang) {
-                _this.prop('checked',true).parent().addClass('active');
-                return;
-            }
-        });
-    });
-
-    chrome.storage.local.get('tabId', function(data){
-        if (typeof (data.tabId) == "undefined") {
-            chrome.storage.local.set({'tabId':'tts'});
-            tabId = "tts";
-        } else {
-            tabId = data.tabId;
-        }
-        showTabs();
-    });
 
     chrome.tabs.executeScript( {
         code: "window.getSelection().toString();"
