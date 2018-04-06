@@ -111,7 +111,7 @@ $(document).ready(function() {
 
     $(document).on('blur', '#functionName', function(){
         var _this = $(this);
-        if (_this.data('preVal')) {
+        if (!_this.val() && _this.data('preVal')) {
             _this.val(_this.data('preVal'));
         }
     });
